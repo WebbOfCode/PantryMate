@@ -10,5 +10,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  base: '/PantryMate/'
+  base: process.env.NODE_ENV === 'production' && process.env.GITHUB_PAGES ? '/PantryMate/' : '/'
 })

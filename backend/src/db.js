@@ -1,13 +1,25 @@
 import Database from 'better-sqlite3'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import fs from 'fs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const dbPath = path.join(__dirname, '../data/pantrymate.db')
+const dbDir = path.join(__dirname, '../data')
+const dbPath = path.join(dbDir, 'pantrymate.db')
 
 let db
 
 export function initDatabase() {
+  // Ensure data directory exists
+  try {
+    if (!fs.existsSync(dbDir)) {
+      fs.mkdirSync(dbDir, { recursive: true })
+    }
+  } catch (err) {
+    console.error('Failed to create data directory', err)
+    throw err
+  }
+
   db = new Database(dbPath)
   db.pragma('journal_mode = WAL')
 
